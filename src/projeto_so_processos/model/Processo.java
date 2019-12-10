@@ -9,12 +9,12 @@ import java.util.Random;
 public class Processo {
 //    Atributos
     private String nome;
-    private String recurso;
+    private Requerimento recurso;
     private Requerimento requerimento;
 
 //    Construtor
 
-    public Processo(String nome, String recurso, Requerimento requerimento) {
+    public Processo(String nome, Requerimento recurso, Requerimento requerimento) {
         this.nome = nome;
         this.recurso = recurso;
         this.requerimento = requerimento;
@@ -34,11 +34,11 @@ public class Processo {
         this.nome = nome;
     }
     
-    public String getRecurso() {
+    public Requerimento getRecurso() {
         return recurso;
     }
 
-    public void setRecurso(String recurso) {
+    public void setRecurso(Requerimento recurso) {
         this.recurso = recurso;
     }
 

@@ -12,9 +12,11 @@ package projeto_so_processos.model;
 public class Requerimento{
     
     private String nome;
+    private int tipo;
 
-    public Requerimento(String nome) {
+    public Requerimento(String nome, int tipo) {
         this.nome = nome;
+        this.tipo = tipo;
     }
 
     public String getNome() {
@@ -23,6 +25,14 @@ public class Requerimento{
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
     
     

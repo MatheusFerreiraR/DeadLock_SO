@@ -27,37 +27,16 @@ import projeto_so_processos.model.Requerimento;
  *
  * @author a1980009
  */
-public class TelaProcessos extends javax.swing.JFrame {
-    private List<Processo> listaProcesso;
-    private List<Requerimento> listaRecurso;
-    private List<Processo> processRun;
-    public boolean adiciona;
-    private boolean iniciado;
+public class TelaProcessosDeadLock extends javax.swing.JFrame {
+    
+//    Atributos
+   // protected list<Processo> listProcess;
     
     
-    public TelaProcessos() {
+    
+//    Construdor
+    public TelaProcessosDeadLock() {
         initComponents();
-        
-//        inicializando flag
-        this.iniciado = false;
-        this.adiciona = true;
-        
-//        Configurando Barra de Progresso
-        barraProgresso1.setStringPainted(true);
-        barraProgresso1.setMaximum(5);
-        barraProgresso1.setValue(0);
-        barraProgresso1.setForeground(Color.GREEN);
-        
-        barraProgresso2.setStringPainted(true);
-        barraProgresso2.setMaximum(3);
-        barraProgresso2.setValue(0);
-        barraProgresso2.setForeground(Color.GREEN);
-        
-        this.listaProcesso = new ArrayList();
-        this.listaRecurso = new ArrayList<>();
-        this.processRun = new ArrayList();
-        
-        this.createListProcess("Processo - ", false, 10);
         
     }
     
@@ -175,166 +154,14 @@ public class TelaProcessos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbRunSmulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRunSmulationActionPerformed
-        if(this.iniciado){
-            JOptionPane.showMessageDialog(null, "Simulação já inicializada!!");
-        }else if(listaProcesso.size() == 0){
-            JOptionPane.showMessageDialog(null, "Nenhum processo adicionado");            
-        }else{
-            this.iniciado = true;
-            
-            this.runSimulation();
-            
-
-//            this.iniciado = false;  
-        }
+        
     }//GEN-LAST:event_jbRunSmulationActionPerformed
     
-    private void createListProcess(String name, Boolean complementary, int qtdProcess){
-        Random tempo = new Random();
-        
-        Requerimento req1 = new Requerimento("Req 1", 1);
-        Requerimento req2 = new Requerimento("Req 2", 2);
-        
-        for (int i = 0; i < qtdProcess; i++) {
-            Processo p;
-            if(tempo.nextInt(2) == 1){
-                p = new Processo(name + (i+1), req1, req2);
-            }else{
-                p = new Processo(name + (i+1), req2, req1);
-            }
-            this.listaProcesso.add(p);
-            this.processRun.add(p);
-        }
-        
-        this.addTableProcess();
-    }
-    
-    private void runSimulation(){
-        
-        DefaultTableModel jtabP =  (DefaultTableModel) tabProcess.getModel();
-        
-        
-        if(this.listaProcesso.size() != 0){
-            if(barraProgresso1.getValue() == 0){
-                try {
-                    jtabP.removeRow(0);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e);
-                }
-            }
-
-            if(barraProgresso2.getValue() == 0){
-                try {
-                    jtabP.removeRow(0);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e);
-                }
-            }
-            
-            listaProcesso.remove(0);
-            this.simulation();
-        }
-    }
-    
-    public void simulation(){
-        DefaultTableModel jtabR1 =  (DefaultTableModel) tabProcessRun1.getModel();
-        DefaultTableModel jtabR2 =  (DefaultTableModel) tabProcessRun2.getModel();
-        
-        
-        
-        if(barraProgresso1.getValue() == 0){
-            Object[] obj = {
-                this.processRun.get(0).getNome(), 
-                this.processRun.get(0).getRecurso().getNome()
-            }; 
-            jtabR1.addRow(obj);
-            this.processRun.remove(0);
-            new Processing1().start();
-        }
-        
-        if(barraProgresso2.getValue() == 0){
-            Object[] obj2 = {
-                this.processRun.get(0).getNome(), 
-                this.processRun.get(0).getRecurso().getNome()
-            };
-            jtabR2.addRow(obj2);
-            this.processRun.remove(0);
-            new Processing2().start();
-        }
-      
-//        Chamando a Thread Que simula o tempo de processo
-        
-    }
-    
-    public void addTableProcess(){
-        DefaultTableModel jtab =  (DefaultTableModel) tabProcess.getModel();
-        jtab.setRowCount(0);
-        
-        jtab.setRowCount(0);
-        
-//        System.out.println("QTD PRO: " + this.listaProcesso.size());
-        
-        for (Processo process : this.listaProcesso) {
-            Object[] obj = {
-                process.getNome(), 
-                process.getRecurso().getNome(),
-                process.getRequerimento().getNome()
-            };
-            jtab.addRow(obj);
-        }
-    }
-    
-    public void updateBarProcess(){
-        if(barraProgresso1.getValue() == barraProgresso1.getMaximum()){
-            this.barraProgresso1.setValue(0);
-            this.barraProgresso1.setMaximum(7);    
-        }
-        if(barraProgresso2.getValue() == barraProgresso2.getMaximum()){
-            this.barraProgresso2.setValue(0);
-            this.barraProgresso2.setMaximum(5);
-        }
-    }
-    
+   
+//    Minhas Funções
     public void updateListTable(){
         
-        this.updateBarProcess();
-        
-        DefaultTableModel jtabRun1 =  (DefaultTableModel) tabProcessRun1.getModel();
-        DefaultTableModel jtabRun2 =  (DefaultTableModel) tabProcessRun2.getModel();
-        DefaultTableModel jtabLivre =  (DefaultTableModel) tabProcessLivre.getModel();
-        
-        
-        
-        Object[] obj = {this.processRun.get(0).getRecurso().getNome()};
-        
-        if(barraProgresso1.getValue() == 0){
-            try {
-                jtabRun1.removeRow(0);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-        if(barraProgresso2.getValue() == 0){
-            try {
-                jtabRun2.removeRow(0);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-        
-        if(!this.listaRecurso.contains(this.processRun.get(0).getRecurso())){
-           this.listaRecurso.add(this.processRun.get(0).getRecurso());
-           jtabLivre.addRow(obj); 
-        }
-
-        
-        if(this.listaProcesso.size() >= 1){
-           this.runSimulation();
-        }else{
-            JOptionPane.showMessageDialog(null, "Concluido");
-        }
     }
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JProgressBar barraProgresso1;
